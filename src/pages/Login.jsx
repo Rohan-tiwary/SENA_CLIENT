@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { AppContent } from "../context/AppContext";
 import { toast } from "react-toastify";
 import axios from "axios";
-
 const Login = () => {
   const { setIsLoggedin, getUserData } = useContext(AppContent);
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -37,7 +36,7 @@ const Login = () => {
       if (data.success) {
         setIsLoggedin(true);
         getUserData();
-        navigate("/");
+        navigate("/Leaderboard");
       } else {
         toast.error(data.message);
       }
