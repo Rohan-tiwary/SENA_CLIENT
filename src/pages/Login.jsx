@@ -80,7 +80,7 @@ const Login = () => {
         </p>
         <form onSubmit={onSubmitHandler}>
           {state === "Sign Up" && (
-            <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C] ">
+            <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C]">
               <img src={assets.person_icon} alt="" />
               <input
                 onChange={(e) => setName(e.target.value)}
@@ -98,9 +98,9 @@ const Login = () => {
             <input
               onChange={(e) => setEmail(e.target.value)}
               value={email}
-              className="bg-transparent outline-none w-full overflow-hidden text-ellipsis whitespace-nowrap text-indigo"
+              className="bg-transparent w-full outline-none overflow-hidden text-ellipsis whitespace-nowrap text-indigo invalid:text-pink-600 focus:border-sky-500 focus:outline focus:outline-sky-500 focus:invalid:border-pink-500 focus:invalid:outline-pink-500 disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 disabled:shadow-none dark:disabled:border-gray-700 dark:disabled:bg-gray-800/20"
               type="email"
-              placeholder="Email Id"
+              placeholder="@gmail.com"
               required
             ></input>
           </div>
@@ -110,7 +110,7 @@ const Login = () => {
             <input
               onChange={(e) => setPassword(e.target.value)}
               value={password}
-              className="bg-transparent outline-none"
+              className="bg-transparent outline-none "
               type="password"
               placeholder="Password"
               required
@@ -143,7 +143,7 @@ const Login = () => {
             Don't have an account?
             <span
               onClick={() => setState("Sign Up")}
-              className="text-blue-400 cursor-pointer underline mt-2"
+              className="text-blue-500 cursor-pointer underline mt-2 "
             >
               Sign up
             </span>

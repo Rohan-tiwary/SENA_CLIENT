@@ -222,24 +222,24 @@ const Leaderboard = () => {
 
 
 {activeTab === 'totalPoints' && (
-  <div className="flex flex-col items-center space-y-8 bg-gray-900 p-8 rounded-xl shadow-lg border border-gray-700 max-w-lg mx-auto ">
+  <div className="flex flex-col items-center space-y-8 bg-gray-900 p-8 rounded-2xl shadow-xl border border-gray-700 max-w-lg mx-auto">
     {/* Total Points Display */}
-    <div className="bg-gray-800 px-12 py-6 rounded-lg shadow-md border border-yellow-500">
-      <p className="text-black-400 text-6xl font-extrabold tracking-wide">
+    <div className="bg-gray-800 px-12 py-6 rounded-lg shadow-lg border border-yellow-500 text-center">
+      <p className="text-yellow-400 text-6xl font-extrabold tracking-widest drop-shadow-md">
         {user.totalPoints}
       </p>
-      <p className="text-gray-300 text-lg mt-2 text-center">Total Points</p>
+      <p className="text-gray-300 text-lg mt-2 font-medium">Total Points</p>
     </div>
 
     {/* Points Breakdown */}
-    <div className="w-full flex justify-between text-gray-300 text-sm px-4">
-      <div>
-        <p className="font-semibold">Earned:</p>
-        <p className="text-green-400">+500</p>
+    <div className="w-full flex justify-between text-gray-300 text-sm px-6">
+      <div className="text-center">
+        <p className="font-semibold text-gray-200">Earned:</p>
+        <p className="text-green-400 text-lg font-bold">+500</p>
       </div>
-      <div>
-        <p className="font-semibold">Redeemed:</p>
-        <p className="text-red-400">-400</p>
+      <div className="text-center">
+        <p className="font-semibold text-gray-200">Redeemed:</p>
+        <p className="text-red-400 text-lg font-bold">-400</p>
       </div>
     </div>
 
@@ -248,14 +248,14 @@ const Leaderboard = () => {
       {!redeemPoints ? (
         <button
           onClick={handleRedeemPoints}
-          className="bg-green-500 text-black font-semibold px-6 py-3 rounded-lg shadow hover:bg-yellow-400 transition duration-200"
+          className="bg-yellow-500 text-gray-900 font-semibold px-6 py-3 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 hover:bg-yellow-400"
         >
           🎉 Redeem Points
         </button>
       ) : (
         <button
           onClick={handlePaymentGateway}
-          className="bg-green-500 text-white font-semibold px-6 py-3 rounded-lg shadow hover:bg-green-400 transition duration-200"
+          className="bg-green-500 text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 hover:bg-green-400"
         >
           💸 Payment Gateway
         </button>
@@ -263,6 +263,7 @@ const Leaderboard = () => {
     </div>
   </div>
 )}
+
 
         {activeTab === 'FAQ' && FAQ.map((FAQ, index) => (
           <div key={index} className="mb-4">

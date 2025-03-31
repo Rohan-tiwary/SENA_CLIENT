@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState,useRef ,useEffect} from "react";
 import { assets } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
 import { AppContent } from "../context/AppContext";
@@ -8,7 +8,19 @@ const NavBar = () => {
   const navigate=useNavigate();
   const {userData,backendUrl,setUserData,setIsLoggedin}=useContext(AppContent)
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+  
+  
   const sendVerificationOtp=async()=>{
     try{
       axios.defaults.withCredentials=true;
@@ -37,20 +49,20 @@ const NavBar = () => {
     }
   }
   return (
-    <div className="max-w-7xl mx-auto flex justify-between items-center p-4 sm:p-6 sm:px-24 absolute top-0 left-0 right-0">
+    <div className="max-w-7xl mx-auto flex justify-between items-center p-4 sm:p-6 sm:px-24 absolute top-0 left-0 right-0  z-50">
       {/* Logo */}
-      <img src="https://gauravgo.com/wp-content/uploads/2020/01/cropped-Transparent-Logo-.png" alt="" className="w-15 sm:max-w-30" />
+      <img src="https://gauravgo.com/wp-content/uploads/2020/01/cropped-Transparent-Logo-.png" alt="" className="w-15 sm:max-w-30 animate-bounce" />
 
       {/* User Menu */}
       {userData ? (
-        <div
+        <div ref={menuRef}
           className="w-8 h-8 flex justify-center items-center rounded-full bg-gray-500 text-white relative group"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           {userData.name[0].toUpperCase()}
           
           {/* Dropdown */}
-          <div
+          <div  
             className={`absolute top-0 right-0 z-10 text-black rounded pt-10 ${
               menuOpen ? "block" : "hidden"
             } group-hover:block`}
