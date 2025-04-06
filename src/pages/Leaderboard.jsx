@@ -88,7 +88,7 @@ const Leaderboard = () => {
   };
 
   return (
-    <div className="h-screen bg-gray-900 text-white overflow-x-hidden p-4 sm:p-6 bg-[url(https://res.allmacwallpaper.com/get/Retina-MacBook-Air-13-inch-wallpapers/Surface-Of-The-Planet-2560x1600/9479-11.jpg)] bg-center bg-cover">
+    <div className="h-screen bg-gray-900 text-white overflow-x-hidden p-4 sm:p-6 bg-[url(https://media4.giphy.com/media/U3qYN8S0j3bpK/giphy.webp?cid=790b76111zx2xfpo8btvh7uzaa797v7nbnmjxc2ad8ht4ov3&ep=v1_gifs_search&rid=giphy.webp&ct=g)] sm:bg-[url(https://res.allmacwallpaper.com/get/Retina-MacBook-Air-13-inch-wallpapers/Surface-Of-The-Planet-2560x1600/9479-11.jpg)] bg-center bg-cover">
       <NavBar />
       <div className="flex flex-col items-center mb-6 p-4">
         <img src={user.pic} alt={user.name.name} className="w-24 h-24 rounded-full border-4 border-blue-500 shadow-lg" />
@@ -212,7 +212,6 @@ const Leaderboard = () => {
       </div>
     ))}
 
-    {/* Overall Rating */}
     <div className="text-center mt-6">
       <p className="text-white text-lg mb-2">Overall Performance</p>
       <p className="text-yellow-400 text-5xl font-extrabold animate-pulse">{Math.floor((user.winRate + 69 + 20 + 85 + 45 + 92) / 6)}%</p>
@@ -222,40 +221,88 @@ const Leaderboard = () => {
 
 
 {activeTab === 'totalPoints' && (
-  <div className="flex flex-col items-center space-y-8 bg-gray-900 p-8 rounded-2xl shadow-xl border border-gray-700 max-w-lg mx-auto">
-    {/* Total Points Display */}
-    <div className="bg-gray-800 px-12 py-6 rounded-lg shadow-lg border border-yellow-500 text-center">
-      <p className="text-yellow-400 text-6xl font-extrabold tracking-widest drop-shadow-md">
-        {user.totalPoints}
-      </p>
-      <p className="text-gray-300 text-lg mt-2 font-medium">Total Points</p>
+  <div className="relative flex flex-col items-center bg-gray-900 p-10 rounded-3xl shadow-2xl border border-gray-700 max-w-md mx-auto">
+  
+    <div className="relative flex justify-center items-center w-48 h-48">
+      <svg className="absolute w-full h-full animate-spin-slow" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="40" stroke="gray" strokeWidth="8" fill="none"/>
+        <circle 
+          cx="50" cy="50" r="40" 
+          strokeWidth="8" strokeDasharray="250" 
+          strokeDashoffset={250 - (user.totalPoints / 1000) * 250} 
+          fill="none"
+          className="stroke-yellow-500 animate-gradient"
+        />
+      </svg>
+      <p className="text-yellow-400 text-5xl font-bold">{user.totalPoints}</p>
     </div>
 
-    {/* Points Breakdown */}
-    <div className="w-full flex justify-between text-gray-300 text-sm px-6">
+    <div className="flex justify-between w-full mt-6 px-6">
       <div className="text-center">
-        <p className="font-semibold text-gray-200">Earned:</p>
+        <p className="text-gray-400 text-sm uppercase font-semibold">Earned</p>
         <p className="text-green-400 text-lg font-bold">+500</p>
       </div>
       <div className="text-center">
-        <p className="font-semibold text-gray-200">Redeemed:</p>
+        <p className="text-gray-400 text-sm uppercase font-semibold">Redeemed</p>
         <p className="text-red-400 text-lg font-bold">-400</p>
       </div>
     </div>
-
-    {/* Action Buttons */}
-    <div className="flex space-x-4 w-full justify-center">
+    <div className="absolute -bottom-6 flex space-x-4">
       {!redeemPoints ? (
         <button
           onClick={handleRedeemPoints}
-          className="bg-yellow-500 text-gray-900 font-semibold px-6 py-3 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 hover:bg-yellow-400"
+          className="bg-yellow-500 text-gray-900 font-semibold px-6 py-3 rounded-full shadow-lg transition transform hover:scale-105"
+        >
+          🎉 Redeem
+        </button>
+      ) : (
+        <button
+          onClick={handlePaymentGateway}
+          className="bg-green-500 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition transform hover:scale-105"
+        >
+          💸 Pay Now
+        </button>
+      )}
+    </div>
+  </div>
+)}
+        {activeTab === 'FAQ' && FAQ.map((FAQ, index) => (
+          <div key={index} className="mb-4">
+            <button className="w-full text-left text-blue-400" onClick={() => setOpenFAQ(openFAQ === index ? null : index)}>
+              {FAQ.question}{activeTab === 'totalPoints' && (
+  <div className="flex flex-col items-center space-y-8 bg-gray-900 p-8 rounded-3xl shadow-2xl border border-gray-700 max-w-lg mx-auto backdrop-blur-md bg-opacity-90">
+  
+    <div className="bg-gradient-to-br from-gray-800 to-gray-900 px-14 py-8 rounded-xl shadow-lg border border-yellow-500 text-center">
+      <p className="text-yellow-400 text-7xl font-extrabold tracking-widest drop-shadow-xl">
+        {user.totalPoints}
+      </p>
+      <p className="text-gray-300 text-lg mt-3 font-medium">Total Points</p>
+    </div>
+
+    <div className="w-full flex justify-between text-gray-300 text-sm px-8">
+      <div className="text-center">
+        <p className="font-semibold text-gray-200 uppercase tracking-wide">Earned</p>
+        <p className="text-green-400 text-xl font-bold">+500</p>
+      </div>
+      <div className="text-center">
+        <p className="font-semibold text-gray-200 uppercase tracking-wide">Redeemed</p>
+        <p className="text-red-400 text-xl font-bold">-400</p>
+      </div>
+    </div>
+
+   
+    <div className="flex space-x-6 w-full justify-center">
+      {!redeemPoints ? (
+        <button
+          onClick={handleRedeemPoints}
+          className="bg-gradient-to-r from-yellow-500 to-yellow-400 text-gray-900 font-semibold px-6 py-3 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl"
         >
           🎉 Redeem Points
         </button>
       ) : (
         <button
           onClick={handlePaymentGateway}
-          className="bg-green-500 text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 hover:bg-green-400"
+          className="bg-gradient-to-r from-green-500 to-green-400 text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl"
         >
           💸 Payment Gateway
         </button>
@@ -264,11 +311,6 @@ const Leaderboard = () => {
   </div>
 )}
 
-
-        {activeTab === 'FAQ' && FAQ.map((FAQ, index) => (
-          <div key={index} className="mb-4">
-            <button className="w-full text-left text-blue-400" onClick={() => setOpenFAQ(openFAQ === index ? null : index)}>
-              {FAQ.question}
             </button>
             {openFAQ === index && <p className="text-gray-300">{FAQ.answer}</p>}
           </div>
@@ -281,7 +323,7 @@ const Leaderboard = () => {
         </button>
       </div>
 
-      <footer className="mt-8 text-center text-sm">
+      <footer className="mt-8 text-center text-sm ">
         © 2025 GauravGo Gaming Leaderboard. All rights reserved.
       </footer>
     </div>

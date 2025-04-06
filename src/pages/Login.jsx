@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react";
 import { assets } from "../assets/assets";
-import { useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 import { AppContent } from "../context/AppContext";
 import { toast } from "react-toastify";
 import axios from "axios";
+
 const Login = () => {
   const { setIsLoggedin, getUserData } = useContext(AppContent);
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -12,6 +13,10 @@ const Login = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("user");
+
+  //const location=useLocation();
+  //const role = location.state?.role
 
   const onSubmitHandler = async (e) => {
   try {
@@ -36,7 +41,7 @@ const Login = () => {
       if (data.success) {
         setIsLoggedin(true);
         getUserData();
-        navigate("/Leaderboard");
+        handleNavigation();
       } else {
         toast.error(data.message);
       }
@@ -49,8 +54,9 @@ const Login = () => {
 
       if (data.success) {
         setIsLoggedin(true);
+        localStorage.setItem("user", JSON.stringify(data.user));
         getUserData();
-        navigate("/Leaderboard");
+        handleNavigation();
       } else {
         toast.error(data.message);
       }
@@ -59,16 +65,36 @@ const Login = () => {
     toast.error(error.message);
   }
 };
+const handleNavigation = () => {
+  switch (role) {
+    case "user":
+      navigate("/Leaderboard");
+      break;
+    case "developer":
+      navigate("/developer-dashboard");
+      break;
+    case "influencer":
+      navigate("/influencer-dashboard");
+      break;
+    case "sponsor":
+      navigate("/sponsor-dashboard");
+      break;
+    default:
+      navigate("/");
+  }
+};
+
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-6 sm:px-0 bg-gradient-to-b from-gray-900 to-black sm:bg-[url(https://e0.pxfuel.com/wallpapers/252/303/desktop-wallpaper-blue-space-35493.jpg)] bg-[url(https://i.pinimg.com/736x/50/38/cc/5038ccfef62ad4562fdbe66269e32bf5.jpg)] bg-cover bg-center">
-      <img
-        onClick={() => navigate("/")}
-        alt=""
-        className="absolute left-5 sm:left-20 top-5 w-28 sm:w-32 cursor-pointer"
-      />
-      <div className="bg-gradient-to-b from-gray-900 to-black p-10 rounded-lg shadow-lg w-full sm:w-96 text-indigo-300 text-sm">
-        <h2 className="text-3xl font-semibold text-white text-center mb-3">
+    <div className="flex items-center justify-center min-h-screen px-6 sm:px-0 bg-gradient-to-b from-gray-900 to-black sm:bg-[url(https://media3.giphy.com/media/xTiTnxpQ3ghPiB2Hp6/200.webp?cid=ecf05e470aqlll8svh24j60ezl408b1bvltvnip35rcntga2&ep=v1_gifs_related&rid=200.webp&ct=g)]  bg-[url(https://media3.giphy.com/media/xTiTnxpQ3ghPiB2Hp6/200.webp?cid=ecf05e470aqlll8svh24j60ezl408b1bvltvnip35rcntga2&ep=v1_gifs_related&rid=200.webp&ct=g)] bg-cover bg-center">
+      <div className=" p-10 rounded-lg shadow-lg w-full sm:w-96 text-indigo-300 text-sm"
+       style={{
+        boxShadow: "0 0 12px #FFFFFF, 0 0 24px #00FFFF, 0 0 36px #00FFFF",
+        border: "2px solid #FFFFFF",
+      }}
+      >
+
+        <h2 className="text-2xl font-semibold text-white text-center mb-3 animate-bounce">
           {state === "Sign Up"
             ? "Create your Account"
             : "Login to your Account!"}
@@ -115,6 +141,21 @@ const Login = () => {
               placeholder="Password"
               required
             ></input>
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-sm mb-2">Select Role:</label>
+            <select
+              className="w-full p-2 bg-gray-700 rounded"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              required
+            >
+              <option value="user">User</option>
+              <option value="developer">Developer</option>
+              <option value="influencer">Influencer</option>
+              <option value="sponsor">Sponsor</option>
+            </select>
           </div>
 
           <p

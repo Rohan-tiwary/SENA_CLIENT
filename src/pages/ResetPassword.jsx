@@ -90,14 +90,6 @@ const ResetPassword = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen px-6 sm:px-0 bg-gradient-to-b from-gray-900 to-black bg-[url('https://i.pinimg.com/474x/01/f5/a0/01f5a00119e1226636fb92078493133a.jpg')] bg-cover bg-center">
-      {/* <img
-        onClick={() => navigate("/")}
-        src="https://gauravgo.com/wp-content/uploads/2020/01/cropped-Transparent-Logo-.png"
-        alt=""
-        className="absolute left-5 sm:left-20 top-5 w-28 sm:w-32 cursor-pointer"
-      /> */}
-
-      {/* Enter email ID */}
       {!isEmailSent && (
         <form
           onSubmit={onSubmitEmail}

@@ -19,6 +19,8 @@ const NavBar = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+ 
+  
   
   
   const sendVerificationOtp=async()=>{
@@ -36,6 +38,8 @@ const NavBar = () => {
         toast.error(error.message);
    }
   }
+
+  
   const logout =async()=>{
     try{
       axios.defaults.withCredentials=true;
@@ -48,20 +52,18 @@ const NavBar = () => {
       toast.error(error.message);
     }
   }
+
   return (
     <div className="max-w-7xl mx-auto flex justify-between items-center p-4 sm:p-6 sm:px-24 absolute top-0 left-0 right-0  z-50">
-      {/* Logo */}
       <img src="https://gauravgo.com/wp-content/uploads/2020/01/cropped-Transparent-Logo-.png" alt="" className="w-15 sm:max-w-30 animate-bounce" />
 
-      {/* User Menu */}
       {userData ? (
         <div ref={menuRef}
           className="w-8 h-8 flex justify-center items-center rounded-full bg-gray-500 text-white relative group"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           {userData.name[0].toUpperCase()}
-          
-          {/* Dropdown */}
+        
           <div  
             className={`absolute top-0 right-0 z-10 text-black rounded pt-10 ${
               menuOpen ? "block" : "hidden"

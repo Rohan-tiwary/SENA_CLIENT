@@ -3,3 +3,83 @@
 *{
   font-family: "Outfit",sans-serif;
 }
+@keyframes spin-slow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes gradient-shift {
+  0% { stroke: #6a0dad; }   /* Dark Purple */
+  25% { stroke: #ff5733; }  /* Vivid Orange */
+  50% { stroke: #ff00ff; }  /* Neon Magenta */
+  75% { stroke: #00bfff; }  /* Electric Blue */
+  100% { stroke: #00ffcc; } /* Neon Cyan */
+}
+
+.animate-gradient {
+  animation: gradient-shift 4s linear infinite;
+}
+
+
+.animate-spin-slow {
+  animation: spin-slow 5s linear infinite;
+}
+
+.animate-gradient {
+  animation: gradient-shift 4s linear infinite;
+}
+
+@keyframes neonBorder {
+  0% {
+    box-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #ff00ff;
+  }
+  25% {
+    box-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 15px #00ffff;
+  }
+  50% {
+    box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00;
+  }
+  75% {
+    box-shadow: 0 0 5px #ffcc00, 0 0 10px #ffcc00, 0 0 15px #ffcc00;
+  }
+  100% {
+    box-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #ff00ff;
+  }
+}
+
+.neon-border {
+  animation: neonBorder 2s linear infinite;
+  border-radius: 5px;
+}
+@keyframes snakeBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.snake-border {
+  position: relative;
+  padding: 4px;
+  border-radius: 10px;
+}
+
+.snake-border::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #ff00ff, #00ffff, #ffcc00, #ff00ff);
+  background-size: 300% 300%;
+  z-index: -1;
+  animation: snakeBorder 3s linear infinite;
+  filter: blur(3px);
+}
