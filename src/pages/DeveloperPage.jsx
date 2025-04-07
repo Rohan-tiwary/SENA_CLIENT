@@ -95,8 +95,9 @@ const DeveloperPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-8 bg-[url(https://img.freepik.com/free-vector/geometric-gradient-futuristic-background_23-2149116406.jpg?t=st=1743944206~exp=1743947806~hmac=98825a789479bf0826ea7126641b40df6ef7bcfa2cc85b3295c9cc1130348add&w=1380)] bg-cover bg-center bg-fixed">
+    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-8 bg-[url(https://img.freepik.com/free-vector/geometric-gradient-futuristic-background_23-2149116406.jpg?t=st=1743944206~exp=1743947806~hmac=98825a789479bf0826ea7126641b40df6ef7bcfa2cc85b3295c9cc1130348add&w=1380)] bg-cover bg-center bg-scroll">
       <NavBar/>
+
       <motion.h1
         className=" mt-12 text-3xl sm:text-7xl font-extrabold mb-12 text-center "
         style={{
