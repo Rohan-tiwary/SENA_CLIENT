@@ -222,7 +222,7 @@ const Login = () => {
             </div>
           )}
 
-<div className="mb-4 flex justify-center transform scale-100  sm:scale-60 md:scale-40">
+<div className="mb-4 flex justify-center transform sm:scale-60 md:scale-40">
   <ReCAPTCHA
     sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
     onChange={handleCaptcha}
