@@ -23,7 +23,6 @@ const Login = () => {
   const handleCaptcha = (token) => {
     setCaptchaToken(token);
   };
-
   const validatePassword = (value) => {
     const regex =
       /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
@@ -36,7 +35,6 @@ const Login = () => {
       setPasswordError("");
     }
   };
-
   const onSubmitHandler = async (e) => {
     try {
       e.preventDefault();
@@ -129,7 +127,6 @@ const Login = () => {
         navigate("/");
     }
   };
-
   return (
     <div className="flex items-center justify-center min-h-screen px-6 sm:px-0 bg-gradient-to-b from-gray-900 to-black sm:bg-[url(https://media3.giphy.com/media/xTiTnxpQ3ghPiB2Hp6/200.webp?cid=ecf05e470aqlll8svh24j60ezl408b1bvltvnip35rcntga2&ep=v1_gifs_related&rid=200.webp&ct=g)]  bg-[url(https://media3.giphy.com/media/xTiTnxpQ3ghPiB2Hp6/200.webp?cid=ecf05e470aqlll8svh24j60ezl408b1bvltvnip35rcntga2&ep=v1_gifs_related&rid=200.webp&ct=g)] bg-cover bg-center">
       <div
@@ -209,7 +206,7 @@ const Login = () => {
           {(role === "developer" ||
             role === "influencer" ||
             role === "sponsor") && (
-            <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C]">
+            <div className="mb-0 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C]">
               <img src={assets.lock_icon} alt="" />
               <input
                 onChange={(e) => setSpecialCode(e.target.value)}
@@ -222,13 +219,12 @@ const Login = () => {
             </div>
           )}
 
-<div className="mb-4 flex justify-center transform scale-75 sm:scale-10 md:scale-90">
-  <ReCAPTCHA
-    sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-    onChange={handleCaptcha}
-  />
-</div>
-
+          <div className="mb-1 flex justify-center transform scale-75 sm:scale-10 md:scale-100">
+            <ReCAPTCHA
+              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+              onChange={handleCaptcha}
+            />
+          </div>
 
           <p
             onClick={() => navigate("/reset-password")}
