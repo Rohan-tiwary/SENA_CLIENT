@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { assets } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
 import { AppContent } from "../context/AppContext";
-import { toast ,Bounce, Zoom} from "react-toastify";
+import { toast, Bounce, Zoom } from "react-toastify";
 import axios from "axios";
 import ReCAPTCHA from "react-google-recaptcha";
 import "react-toastify/dist/ReactToastify.css";
@@ -47,11 +47,14 @@ const Login = () => {
       }
 
       if (passwordError) {
-        toast.error("Password must contain at least 8 characters, a number, a capital letter, and a special symbol.", {
-          position: "top-right",
-          autoClose: 10000,
-          transition: Zoom,
-        });
+        toast.error(
+          "Password must contain at least 8 characters, a number, a capital letter, and a special symbol.",
+          {
+            position: "top-right",
+            autoClose: 10000,
+            transition: Zoom,
+          }
+        );
         return;
       }
 
@@ -219,11 +222,12 @@ const Login = () => {
             </div>
           )}
 
-          <ReCAPTCHA
-            const
-            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-            onChange={handleCaptcha}
-          />
+          <div className="mb-4 flex justify-center transform scale-100 sm:scale-75 md:scale-90">
+            <ReCAPTCHA
+              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+              onChange={handleCaptcha}
+            />
+          </div>
 
           <p
             onClick={() => navigate("/reset-password")}
