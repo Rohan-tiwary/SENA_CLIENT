@@ -222,12 +222,13 @@ const Login = () => {
             </div>
           )}
 
-          <div className="mb-4 flex justify-center transform scale-100 sm:scale-75 md:scale-90">
-            <ReCAPTCHA
-              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-              onChange={handleCaptcha}
-            />
-          </div>
+<div className="mb-4 flex justify-center transform scale-100 xs:scale-50 sm:scale-60 md:scale-75">
+  <ReCAPTCHA
+    sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+    onChange={handleCaptcha}
+  />
+</div>
+
 
           <p
             onClick={() => navigate("/reset-password")}
