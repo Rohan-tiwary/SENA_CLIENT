@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaChartLine, FaHistory, FaMoneyCheckAlt, FaBug, FaGamepad, FaUsers } from "react-icons/fa";
 import NavBar from "../components/NavBar";
+import Tilt from "react-parallax-tilt";
+import DeveloperMotivationPanel from "./DeveloperMotivationalPanel";
+
 const DeveloperPage = () => {
   const [stats, setStats] = useState([]);
   const [features, setFeatures] = useState([]);
-  const [selectedFeature, setSelectedFeature] = useState(null); // Track selected feature
+ 
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -27,8 +30,6 @@ const DeveloperPage = () => {
       ];
       setFeatures(featuresData);
     };
-
-    console.log(motion);
     fetchStats();
     fetchFeatures();
   }, []);
@@ -95,11 +96,23 @@ const DeveloperPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-8 bg-[url(https://img.freepik.com/free-vector/geometric-gradient-futuristic-background_23-2149116406.jpg?t=st=1743944206~exp=1743947806~hmac=98825a789479bf0826ea7126641b40df6ef7bcfa2cc85b3295c9cc1130348add&w=1380)] bg-cover bg-center bg-scroll">
+    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-8 sm:bg-[url(https://i.pinimg.com/736x/ec/f2/57/ecf257e24648362b25563186975e7764.jpg)] bg-[url(https://i.pinimg.com/474x/a8/3c/41/a83c41f61d5a0ddad561c62d38ed2949.jpg)] bg-cover bg-center bg-fixed">
+    
       <NavBar/>
+      <Tilt 
+  glareEnable={true} 
+  tiltMaxAngleX={45} 
+  tiltMaxAngleY={45} 
+  glareColor="transparent" 
+  glareMaxOpacity={0} 
+  perspective={3000} 
+  className="w-full"
+  transitionSpeed={300}
+  gyroscope={true}
+>
 
       <motion.h1
-        className=" mt-12 text-3xl sm:text-7xl font-extrabold mb-12 text-center "
+        className=" mt-12 text-3xl sm:text-7xl font-extrabold mb-12 text-center animate-bounce "
         style={{
           textShadow: "0 0 10px #A020F0, 0 0 20px #A020F0, 0 0 40px #A020F0",
           color: "#FFFFFF",
@@ -119,12 +132,12 @@ const DeveloperPage = () => {
         Developer Dashboard
       </motion.h1>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10 w-full max-w-5xl">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10 w-full max-w-5xl text-center">
   {stats.map((stat, index) => (
     <motion.div
       key={index}
       className="relative bg-gradient-to-br from-gray-950 to-blue-900 p-6 rounded-2xl shadow-lg flex flex-col items-center text-center transition-all
-        hover:scale-105 hover:shadow-[0_0_15px_rgba(255,215,0,0.5)]"
+        hover:scale-105 hover:shadow-[0_0_15px_rgba(255,215,0,0.5)] backdrop-blur-lg"
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.1 }}
@@ -143,44 +156,35 @@ const DeveloperPage = () => {
     </motion.div>
   ))}
 </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl">
-  {features.map((feature, index) => (
-    <div key={index} className="w-full">
-      <motion.button
-        onClick={() =>
-          setSelectedFeature(selectedFeature === feature.key ? null : feature.key)
-        }
-        className={`p-6 rounded-xl shadow-lg transition-all w-full flex flex-col items-center
-          bg-gradient-to-r from-gray-800 to-gray-700 
-          hover:shadow-[0px_0px_10px_rgba(0,255,255,0.5)]
-          ${
-            selectedFeature === feature.key
-              ?"bg-gradient-to-br from-gray-950 via-blue-900 to-gray-900"
-              : ""
-          }`}
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: index * 0.1 }}
-      >
-        {feature.icon}
-        <h2 className="text-lg font-semibold mt-3 text-white">{feature.title}</h2>
-      </motion.button>
+</Tilt>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl">
+    {features.map((feature, index) => (
+  <div key={index} className="w-full">
+    <motion.div
+      className="p-6 rounded-xl shadow-lg transition-all w-full flex flex-col items-center
+        bg-gradient-to-r from-gray-800 to-gray-700 
+        hover:shadow-[0px_0px_10px_rgba(0,255,255,0.5)]"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: index * 0.1 }}
+    >
+      {feature.icon}
+      <h2 className="text-lg font-semibold mt-3 text-white">{feature.title}</h2>
+    </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, height: 0 }}
-        animate={{
-          opacity: selectedFeature === feature.key ? 1 : 0,
-          height: selectedFeature === feature.key ? "auto" : 0,
-        }}
-        transition={{ duration: 0.3 }}
-        className={`overflow-hidden mt-2 rounded-lg shadow-lg
-          ${selectedFeature === feature.key ? "p-4 bg-gray-800/90 border-l-4 border-white neon-border" : ""}`}
-      >
-        {selectedFeature === feature.key && renderFeatureDetails(feature.key)}
-      </motion.div>
-    </div> 
-  ))}
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: index * 0.1 }}
+      className="mt-2 rounded-lg shadow-lg p-4 bg-gray-800/90 border-l-4 border-white neon-border"
+    >
+      {renderFeatureDetails(feature.key)}
+    </motion.div>
+  </div> 
+))}
+
 </div>
+<DeveloperMotivationPanel/>
       <footer className="mt-30 text-center text-sm z-30">
         © 2025 GauravGo Gaming Leaderboard. All rights reserved.
       </footer>

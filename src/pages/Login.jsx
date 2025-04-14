@@ -1,9 +1,11 @@
 import React, { useContext, useState } from "react";
 import { assets } from "../assets/assets";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AppContent } from "../context/AppContext";
-import { toast } from "react-toastify";
+import { toast ,Bounce, Zoom} from "react-toastify";
 import axios from "axios";
+import ReCAPTCHA from "react-google-recaptcha";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const { setIsLoggedin, getUserData } = useContext(AppContent);
@@ -14,86 +16,126 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("user");
+  const [captchaToken, setCaptchaToken] = useState("");
+  const [specialCode, setSpecialCode] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
-  //const location=useLocation();
-  //const role = location.state?.role
+  const handleCaptcha = (token) => {
+    setCaptchaToken(token);
+  };
+
+  const validatePassword = (value) => {
+    const regex =
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
+
+    if (!regex.test(value)) {
+      setPasswordError(
+        "Password must be at least 8 characters, include 1 capital letter, 1 special symbol, and 1 number."
+      );
+    } else {
+      setPasswordError("");
+    }
+  };
 
   const onSubmitHandler = async (e) => {
-  try {
-    e.preventDefault();
+    try {
+      e.preventDefault();
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      withCredentials: true,
-    };
-
-    if (state === "Sign Up") {
-      const { data } = await axios.post(
-        backendUrl + "/api/auth/register",
-        { name, email, password },
-        config
-      );
-
-      console.log(data);
-
-      if (data.success) {
-        setIsLoggedin(true);
-        getUserData();
-        handleNavigation();
-      } else {
-        toast.error(data.message);
+      if (!captchaToken) {
+        toast.error("Please complete the CAPTCHA");
+        return;
       }
-    } else {
-      const { data } = await axios.post(
-        backendUrl + "/api/auth/login",
-        { email, password },
-        config
-      );
 
-      if (data.success) {
-        setIsLoggedin(true);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        getUserData();
-        handleNavigation();
-      } else {
-        toast.error(data.message);
+      if (passwordError) {
+        toast.error("Password must contain at least 8 characters, a number, a capital letter, and a special symbol.", {
+          position: "top-right",
+          autoClose: 10000,
+          transition: Zoom,
+        });
+        return;
       }
+
+      const dev = import.meta.env.VITE_DEV_CODE;
+      const inf = import.meta.env.VITE_INF_CODE;
+      const spo = import.meta.env.VITE_SPO_CODE;
+
+      if (
+        (role === "developer" && specialCode !== dev) ||
+        (role === "influencer" && specialCode !== inf) ||
+        (role === "sponsor" && specialCode !== spo)
+      ) {
+        toast.error("Invalid special access code.");
+        return;
+      }
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      };
+
+      if (state === "Sign Up") {
+        const { data } = await axios.post(
+          backendUrl + "/api/auth/register",
+          { name, email, password, captchaToken, role, specialCode },
+          config
+        );
+
+        if (data.success) {
+          setIsLoggedin(true);
+          getUserData();
+          handleNavigation();
+        } else {
+          toast.error(data.message);
+        }
+      } else {
+        const { data } = await axios.post(
+          backendUrl + "/api/auth/login",
+          { email, password, captchaToken, role, specialCode },
+          config
+        );
+
+        if (data.success) {
+          setIsLoggedin(true);
+          localStorage.setItem("user", JSON.stringify(data.user));
+          getUserData();
+          handleNavigation();
+        } else {
+          toast.error(data.message);
+        }
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
-  } catch (error) {
-    toast.error(error.message);
-  }
-};
-const handleNavigation = () => {
-  switch (role) {
-    case "user":
-      navigate("/Leaderboard");
-      break;
-    case "developer":
-      navigate("/developer-dashboard");
-      break;
-    case "influencer":
-      navigate("/influencer-dashboard");
-      break;
-    case "sponsor":
-      navigate("/sponsor-dashboard");
-      break;
-    default:
-      navigate("/");
-  }
-};
-
+  };
+  const handleNavigation = () => {
+    switch (role) {
+      case "user":
+        navigate("/Leaderboard");
+        break;
+      case "developer":
+        navigate("/developer-dashboard");
+        break;
+      case "influencer":
+        navigate("/influencer-dashboard");
+        break;
+      case "sponsor":
+        navigate("/sponsor-dashboard");
+        break;
+      default:
+        navigate("/");
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen px-6 sm:px-0 bg-gradient-to-b from-gray-900 to-black sm:bg-[url(https://media3.giphy.com/media/xTiTnxpQ3ghPiB2Hp6/200.webp?cid=ecf05e470aqlll8svh24j60ezl408b1bvltvnip35rcntga2&ep=v1_gifs_related&rid=200.webp&ct=g)]  bg-[url(https://media3.giphy.com/media/xTiTnxpQ3ghPiB2Hp6/200.webp?cid=ecf05e470aqlll8svh24j60ezl408b1bvltvnip35rcntga2&ep=v1_gifs_related&rid=200.webp&ct=g)] bg-cover bg-center">
-      <div className=" p-10 rounded-lg shadow-lg w-full sm:w-96 text-indigo-300 text-sm"
-       style={{
-        boxShadow: "0 0 12px #FFFFFF, 0 0 24px #00FFFF, 0 0 36px #00FFFF",
-        border: "2px solid #FFFFFF",
-      }}
+      <div
+        className=" p-10 rounded-lg shadow-lg w-full sm:w-96 text-indigo-300 text-sm"
+        style={{
+          boxShadow: "0 0 12px #FFFFFF, 0 0 24px #00FFFF, 0 0 36px #00FFFF",
+          border: "2px solid #FFFFFF",
+        }}
       >
-
         <h2 className="text-2xl font-semibold text-white text-center mb-3 animate-bounce">
           {state === "Sign Up"
             ? "Create your Account"
@@ -134,13 +176,17 @@ const handleNavigation = () => {
           <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C] ">
             <img src={assets.lock_icon} alt="" />
             <input
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                validatePassword(e.target.value);
+              }}
               value={password}
-              className="bg-transparent outline-none "
+              className="bg-transparent outline-none"
               type="password"
               placeholder="Password"
               required
-            ></input>
+              autocomplete="current-password"
+            />
           </div>
 
           <div className="mb-4">
@@ -157,6 +203,27 @@ const handleNavigation = () => {
               <option value="sponsor">Sponsor</option>
             </select>
           </div>
+          {(role === "developer" ||
+            role === "influencer" ||
+            role === "sponsor") && (
+            <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C]">
+              <img src={assets.lock_icon} alt="" />
+              <input
+                onChange={(e) => setSpecialCode(e.target.value)}
+                value={specialCode}
+                className="bg-transparent outline-none"
+                type="text"
+                placeholder="Enter Special Access Code"
+                required
+              />
+            </div>
+          )}
+
+          <ReCAPTCHA
+            const
+            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+            onChange={handleCaptcha}
+          />
 
           <p
             onClick={() => navigate("/reset-password")}

@@ -9,13 +9,15 @@ import Leaderboard from './pages/Leaderboard'
 import DeveloperPage from './pages/DeveloperPage'
 import InfluencerPage from './pages/InfluencerPage'
 import SponsorPage from './pages/SponsorPage'
+
 const App = () => {
+
+ 
   return (
     <div>
       <ToastContainer/>
       <Routes>
         <Route path='/' element={<Home/>}/>
-        {/* <Route path='/selectionpage' element={<LoginSelection/>}/> */}
         <Route path="/developer-dashboard"element={<DeveloperPage />}/>
         <Route path="/influencer-dashboard" element={<InfluencerPage/>}/>
         <Route path="/sponsor-dashboard" element={<SponsorPage/>}/>

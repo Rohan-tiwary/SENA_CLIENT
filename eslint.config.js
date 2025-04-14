@@ -28,6 +28,12 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
+      rules: {
+        "no-unused-vars": "off",
+      },
+      mimeTypes: {
+        "video/mp4": ["mp4"],
+      },
     },
   },
 ]
