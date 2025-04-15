@@ -46,7 +46,7 @@ const Login = () => {
         toast.error("Please complete the CAPTCHA");
         return;
       }
-      localStorage.setItem("authToken", res.data.token);
+      localStorage.setItem("authToken", data.token);
 
       if (passwordError) {
         toast.error(
