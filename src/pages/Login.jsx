@@ -47,7 +47,6 @@ const Login = () => {
         return;
       }
 
-
       if (passwordError) {
         toast.error(
           "Password must contain at least 8 characters, a number, a capital letter, and a special symbol.",
@@ -87,7 +86,6 @@ const Login = () => {
         );
 
         if (data.success) {
-          localStorage.setItem("authToken", data.token);
           setIsLoggedin(true);
           getUserData();
           handleNavigation();
@@ -102,7 +100,6 @@ const Login = () => {
         );
 
         if (data.success) {
-          localStorage.setItem("authToken", data.token);
           setIsLoggedin(true);
           localStorage.setItem("user", JSON.stringify(data.user));
           getUserData();
