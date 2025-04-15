@@ -20,7 +20,7 @@ const Login = () => {
   const [captchaToken, setCaptchaToken] = useState("");
   const [specialCode, setSpecialCode] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [showPassword,setShowPassword]=useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleCaptcha = (token) => {
     setCaptchaToken(token);
@@ -62,12 +62,10 @@ const Login = () => {
       const dev = import.meta.env.VITE_DEV_CODE;
       const inf = import.meta.env.VITE_INF_CODE;
       const spo = import.meta.env.VITE_SPO_CODE;
-      
 
       console.log("Role:", dev);
       console.log("Received special code:", inf);
       console.log("Expected special code:", spo);
-  
 
       if (
         (role === "developer" && specialCode !== dev) ||
@@ -101,7 +99,7 @@ const Login = () => {
       } else {
         const { data } = await axios.post(
           backendUrl + "/api/auth/login",
-          { email, password, role, specialCode , captchaToken },
+          { email, password, role, specialCode, captchaToken },
           config
         );
 
@@ -182,29 +180,31 @@ const Login = () => {
             ></input>
           </div>
 
-        <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C]">
-      <img src={assets.lock_icon} alt="lock" />
-      <input
-        onChange={(e) => {
-          setPassword(e.target.value);
-          validatePassword(e.target.value);
-        }}
-        value={password}
-        className="bg-transparent outline-none flex-1 text-white"
-        type= {showPassword ? "text" : "password"}
-        placeholder="Password"
-        required
-        autoComplete="current-password"
-      />
+          <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C]">
+            <img src={assets.lock_icon} alt="lock" />
+            <div className="relative w-full">
+              <input
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  validatePassword(e.target.value);
+                }}
+                value={password}
+                className="bg-transparent outline-none flex-1 text-white w-full pr-10"
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                required
+                autoComplete="current-password"
+              />
 
-      <button
-        type="button"
-        onClick={() => setShowPassword(!showPassword)}
-        className="focus:outline-none text-white"
-      >
-        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-      </button>
-    </div>
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="focus:outline-none text-white absolute right-0.5"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+          </div>
 
           <div className="mb-4">
             <label className="block text-sm mb-2">Select Role:</label>
