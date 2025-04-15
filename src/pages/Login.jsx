@@ -2,10 +2,11 @@ import React, { useContext, useState } from "react";
 import { assets } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
 import { AppContent } from "../context/AppContext";
-import { toast, Bounce, Zoom } from "react-toastify";
+import { toast, Zoom } from "react-toastify";
 import axios from "axios";
 import ReCAPTCHA from "react-google-recaptcha";
 import "react-toastify/dist/ReactToastify.css";
+import { Eye, EyeOff } from "lucide-react";
 
 const Login = () => {
   const { setIsLoggedin, getUserData } = useContext(AppContent);
@@ -19,6 +20,7 @@ const Login = () => {
   const [captchaToken, setCaptchaToken] = useState("");
   const [specialCode, setSpecialCode] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [showPassword,setShowPassword]=useState("");
 
   const handleCaptcha = (token) => {
     setCaptchaToken(token);
@@ -92,7 +94,7 @@ const Login = () => {
       } else {
         const { data } = await axios.post(
           backendUrl + "/api/auth/login",
-          { email, password, captchaToken, role, specialCode },
+          { email, password, role, specialCode , captchaToken },
           config
         );
 
@@ -173,21 +175,29 @@ const Login = () => {
             ></input>
           </div>
 
-          <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C] ">
-            <img src={assets.lock_icon} alt="" />
-            <input
-              onChange={(e) => {
-                setPassword(e.target.value);
-                validatePassword(e.target.value);
-              }}
-              value={password}
-              className="bg-transparent outline-none"
-              type="password"
-              placeholder="Password"
-              required
-              autocomplete="current-password"
-            />
-          </div>
+        <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C]">
+      <img src={assets.lock_icon} alt="lock" />
+      <input
+        onChange={(e) => {
+          setPassword(e.target.value);
+          validatePassword(e.target.value);
+        }}
+        value={password}
+        className="bg-transparent outline-none flex-1 text-white"
+        type= {showPassword ? "text" : "password"}
+        placeholder="Password"
+        required
+        autoComplete="current-password"
+      />
+
+      <button
+        type="button"
+        onClick={() => setShowPassword(!showPassword)}
+        className="focus:outline-none text-white"
+      >
+        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+      </button>
+    </div>
 
           <div className="mb-4">
             <label className="block text-sm mb-2">Select Role:</label>
