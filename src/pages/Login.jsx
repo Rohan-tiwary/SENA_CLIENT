@@ -20,7 +20,7 @@ const Login = () => {
   const [captchaToken, setCaptchaToken] = useState("");
   const [specialCode, setSpecialCode] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [showPassword,setShowPassword]=useState("");
+  const [showPassword,setShowPassword]=useState(false);
 
   const handleCaptcha = (token) => {
     setCaptchaToken(token);
@@ -38,6 +38,7 @@ const Login = () => {
     }
   };
   const onSubmitHandler = async (e) => {
+    console.log("Submitted");
     try {
       e.preventDefault();
 
@@ -61,6 +62,12 @@ const Login = () => {
       const dev = import.meta.env.VITE_DEV_CODE;
       const inf = import.meta.env.VITE_INF_CODE;
       const spo = import.meta.env.VITE_SPO_CODE;
+      
+
+      console.log("Role:", dev);
+      console.log("Received special code:", inf);
+      console.log("Expected special code:", spo);
+  
 
       if (
         (role === "developer" && specialCode !== dev) ||

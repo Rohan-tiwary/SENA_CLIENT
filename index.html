@@ -10,10 +10,9 @@
     <div id="root"></div>
     <script type="module" src="./src/main.jsx"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <script>
+    <script type="module">
       const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
       console.log("reCAPTCHA Site Key:", siteKey);
-    
       const script = document.createElement("script");
       script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
       document.body.appendChild(script);
