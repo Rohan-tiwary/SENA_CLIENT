@@ -21,7 +21,7 @@ const Login = () => {
   const [specialCode, setSpecialCode] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
+``
   const handleCaptcha = (token) => {
     setCaptchaToken(token);
   };
@@ -90,6 +90,13 @@ const Login = () => {
           getUserData();
           handleNavigation();
         } else {
+          if (error.response.status === 409) {
+            toast.info("This email is already registered. Please log in instead.", {
+              position: "top-right",
+              autoClose: 8000,
+              transition: Zoom,
+            });
+          }
           toast.error(data.message);
         }
       } else {
@@ -109,7 +116,12 @@ const Login = () => {
         }
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.info("This email is already registered. Please log in instead.", {
+        position: "top-right",
+        autoClose: 8000,
+        transition: Zoom,
+      });
+     //toast.error(error.message);
     }
   };
   const handleNavigation = () => {
