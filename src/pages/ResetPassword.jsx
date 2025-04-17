@@ -3,6 +3,7 @@ import { assets } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { Eye, EyeOff } from "lucide-react";
 
 const ResetPassword = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -13,6 +14,7 @@ const ResetPassword = () => {
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [otp, setOtp] = useState("");
   const [isOtpSubmited, setIsOtpSubmited] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const inputRefs = React.useRef([]);
 
@@ -51,6 +53,7 @@ const ResetPassword = () => {
         { email },
         axiosConfig
       );
+
       if (data.success) {
         toast.success(data.message);
         setIsEmailSent(true);
@@ -58,7 +61,7 @@ const ResetPassword = () => {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.info("Wrong");
     }
   };
 
@@ -166,6 +169,7 @@ const ResetPassword = () => {
           </p>
           <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C]">
             <img src={assets.lock_icon} alt="" className="w-3 h-3" />
+            <div className="relative w-full">
             <input
               type="password"
               placeholder="New Password"
@@ -174,6 +178,14 @@ const ResetPassword = () => {
               onChange={(e) => setNewPassword(e.target.value)}
               required
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="focus:outline-none text-white absolute right-0.5"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+            </div>
           </div>
           <button className="w-full py-2.5 bg-gradient-to-r from-indigo-500 to-indigo-900 text-white rounded-full mt-3">
             Submit

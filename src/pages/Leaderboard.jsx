@@ -3,6 +3,7 @@ import NavBar from '../components/NavBar';
 import { FaTrophy, FaShareAlt, FaMedal, FaChartLine, FaGamepad } from 'react-icons/fa';
 import { AppContent } from '../context/AppContext';
 
+
 const FAQ = [
   { question: 'How do I earn points?', answer: 'You earn points by winning matches and completing daily challenges.' },
   { question: 'How can I redeem points?', answer: 'You can redeem points once you have at least 100 points in your account.' },
@@ -18,7 +19,7 @@ const FAQ = [
 
 const Leaderboard = () => {
   const { userData } = useContext(AppContent);
-  const [activeTab, setActiveTab] = useState('score');
+  const [activeTab, setActiveTab] = useState('Statistics');
   const [redeemPoints, setRedeemPoints] = useState(false);
   const [openFAQ, setOpenFAQ] = useState(null);
 
@@ -31,11 +32,22 @@ const Leaderboard = () => {
       matchesPlayed: 20,
       winRate: 75,
       rank: 3,
+      mapName: "Dust II",
+      playTime: "15m 32s",
+      kills: 12,
+      rank: "Gold",
+      won: true,
       pic: 'https://cdn.vectorstock.com/i/1000v/38/48/gamer-gaming-logo-vector-47133848.jpg',
       history: [
         { won: true }, { won: false }, { won: true }, { won: true },
         { won: false }, { won: true }, { won: true }, { won: false }, { won: true },
       ],
+
+      transactions :[
+        { title: 'Tournament Entry', amount: -100, date: '2024-08-01' },
+        { title: 'Reward Claim', amount: +300, date: '2024-08-05' },
+        { title: 'Redeem Coins', amount: -200, date: '2024-08-10' },
+      ]
     },
   ];
 
@@ -73,7 +85,6 @@ const Leaderboard = () => {
     const razorpay = new window.Razorpay(options);
     razorpay.open();
   };
-  
 
   const handleShareScore = () => {
     const shareText = `Check out my score on GauravGo Leaderboard! Name: ${user.name}, Score: ${user.score}, Win Rate: ${user.winRate}%. Can you beat me?`;
@@ -102,7 +113,7 @@ const Leaderboard = () => {
       </div>
 
       <div className="flex flex-wrap justify-center gap-3 mb-6">
-        {['Statistics', 'history', 'matches', 'totalPoints', 'Performance','FAQ'].map((tab) => (
+        {['Statistics', 'history', 'totalPoints', 'Performance','FAQ'].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -114,9 +125,8 @@ const Leaderboard = () => {
           </button>
         ))}
       </div>
-
-      <div className="bg-gray-800 p-4 sm:p-6 rounded-lg shadow-lg max-w-3xl mx-auto mb-8 overflow-hidden">
-      {activeTab === 'Statistics' && (
+ <div className="bg-gray-800 p-4 sm:p-6 rounded-lg shadow-lg max-w-3xl mx-auto mb-8 overflow-hidden neon-border">
+{activeTab === 'Statistics' && (
  <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-4 text-white">
  {[
    { label: 'Score', value: user.score },
@@ -150,39 +160,34 @@ const Leaderboard = () => {
     {user.history.map((match, index) => (
       <div
         key={index}
-        className="flex items-center justify-between p-4 rounded-lg bg-gray-700/60 hover:bg-gray-700 transition duration-300 border border-gray-600 shadow-sm"
+        className="p-4 rounded-lg bg-gray-700/60 hover:bg-gray-700 transition duration-300 border border-gray-600 shadow-sm"
       >
-        <span className="text-lg font-semibold text-white">
-          Match #{index + 1}
-        </span>
-        <span
-          className={`text-lg font-bold ${
-            match.won ? 'text-green-400' : 'text-red-400'
-          }`}
-        >
-          {match.won ? 'Victory' : 'Defeat'}
-        </span>
+        <div className="flex justify-between items-center mb-2">
+          <span className="text-lg font-bold text-white">Match #{index + 1}</span>
+          <span
+            className={`text-lg font-bold ${
+              match.won ? 'text-green-400' : 'text-red-400'
+            }`}
+          >
+            {match.won ? 'Victory' : 'Defeat'}
+          </span>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm sm:text-base text-gray-300">
+          <div>
+            <span className="font-medium text-white">Map:</span> {user.mapName}
+          </div>
+          <div>
+            <span className="font-medium text-white">Play Time:</span> {user.playTime}
+          </div>
+          <div>
+            <span className="font-medium text-white">Kills:</span> {user.kills}
+          </div>
+          <div>
+            <span className="font-medium text-white">Rank:</span> {user.rank}
+          </div>
+        </div>
       </div>
     ))}
-  </div>
-)}
-
-{activeTab === 'matches' && (
-  <div className="p-6 bg-gray-800/50 rounded-lg shadow-lg text-center space-y-4 border border-gray-700">
-    <h2 className="text-2xl font-bold text-white tracking-wider">Matches Played</h2>
-    <p className="text-5xl font-extrabold text-cyan-400 drop-shadow-lg animate-pulse">
-      {user.matchesPlayed}
-    </p>
-    <div className="grid grid-cols-2 gap-4">
-      <div className="p-4 bg-gray-700/60 rounded-lg hover:scale-105 transition-transform duration-300">
-        <p className="text-lg text-gray-300">Victories</p>
-        <p className="text-3xl text-green-400 font-bold">{user.victories}</p>
-      </div>
-      <div className="p-4 bg-gray-700/60 rounded-lg hover:scale-105 transition-transform duration-300">
-        <p className="text-lg text-gray-300">Defeats</p>
-        <p className="text-3xl text-red-400 font-bold">{user.defeats}</p>
-      </div>
-    </div>
   </div>
 )}
 
@@ -219,46 +224,90 @@ const Leaderboard = () => {
   </div>
 )}
 
-
 {activeTab === 'totalPoints' && (
-  <div className="relative flex flex-col items-center bg-gray-900 p-10 rounded-3xl shadow-2xl border border-gray-700 max-w-md mx-auto">
-  
-    <div className="relative flex justify-center items-center w-48 h-48">
-      <svg className="absolute w-full h-full animate-spin-slow" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="40" stroke="gray" strokeWidth="8" fill="none"/>
-        <circle 
-          cx="50" cy="50" r="40" 
-          strokeWidth="8" strokeDasharray="250" 
-          strokeDashoffset={250 - (user.totalPoints / 1000) * 250} 
-          fill="none"
-          className="stroke-yellow-500 animate-gradient"
-        />
-      </svg>
-      <p className="text-yellow-400 text-5xl font-bold">{user.totalPoints}</p>
+  <div className="bg-gradient-to-r from-gray-700 to-gray-900 p-6 md:p-10 rounded-3xl shadow-2xl max-w-4xl mx-auto">
+
+    <div className="flex justify-center mb-6 md:mb-8">
+      <div className="relative flex justify-center items-center w-36 h-36 sm:w-48 sm:h-48 rounded-full bg-gradient-to-r from-teal-400 to-teal-600 p-4">
+        <svg className="absolute w-full h-full animate-spin-slow" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="40" stroke="gray" strokeWidth="8" fill="none"/>
+          <circle 
+            cx="50" cy="50" r="40" 
+            strokeWidth="8" strokeDasharray="250" 
+            strokeDashoffset={250 - (user.totalPoints / 1000) * 250} 
+            fill="none"
+            className="stroke-teal-500 animate-gradient"
+          />
+        </svg>
+        <p className="text-white text-3xl sm:text-4xl font-semibold">{user.totalPoints}</p>
+      </div>
     </div>
 
-    <div className="flex justify-between w-full mt-6 px-6">
-      <div className="text-center">
-        <p className="text-gray-400 text-sm uppercase font-semibold">Earned</p>
-        <p className="text-green-400 text-lg font-bold">+500</p>
-      </div>
-      <div className="text-center">
-        <p className="text-gray-400 text-sm uppercase font-semibold">Redeemed</p>
-        <p className="text-red-400 text-lg font-bold">-400</p>
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 md:gap-110 mb-8">
+  {[ 
+    { label: 'Earned', value: 500, icon: '🎯', bgColor: 'from-teal-400 to-teal-600' },
+    { label: 'Redeemed', value: 400, icon: '💸', bgColor: 'from-red-400 to-red-600' }
+  ].map((item, index) => (
+    <div
+      key={index}
+      className={`p-2 px-1.5 sm:p-6 md:p-3 gap-1 bg-gradient-to-r ${item.bgColor} rounded-xl shadow-lg text-center hover:scale-105 transition-all md:min-w-[180px]`}
+    >
+      <p className="text-white text-base sm:text-lg font-semibold">{item.label}</p>
+      <div className="flex justify-center items-center">
+        <p className="text-white text-xl sm:text-2xl font-bold mr-2">{item.value}</p>
+        <span className="text-white">{item.icon}</span>
       </div>
     </div>
-    <div className="absolute -bottom-6 flex space-x-4">
+  ))}
+</div>
+
+<div className="bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg w-full">
+  <h3 className="text-xl sm:text-2xl font-bold text-teal-500 mb-4 text-center">Transaction History</h3>
+  
+  <div className="overflow-x-auto">
+    <table className="min-w-full text-left table-auto">
+      <thead>
+        <tr>
+          <th className="py-2 px-4 text-gray-400 text-sm sm:text-base whitespace-nowrap">Transaction</th>
+          <th className="py-2 px-4 text-gray-400 text-sm sm:text-base whitespace-nowrap">Date</th>
+          <th className="py-2 px-4 text-gray-400 text-sm sm:text-base whitespace-nowrap">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {user.transactions?.length ? (
+          user.transactions.map((txn, index) => (
+            <tr key={index} className="hover:bg-gray-700 transition-all">
+              <td className="py-4 px-4 text-white text-sm sm:text-base whitespace-nowrap">{txn.title || 'Transaction'}</td>
+              <td className="py-4 px-4 text-gray-400 text-sm sm:text-base whitespace-nowrap">{txn.date}</td>
+              <td className={`py-4 px-4 text-lg font-bold whitespace-nowrap ${txn.amount > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                {txn.amount > 0 ? `+${txn.amount}` : `${txn.amount}`}
+              </td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan="3" className="py-4 text-center text-gray-500">No transactions found</td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+    {/* Action Buttons */}
+    <div className="mt-6 sm:mt-8 flex justify-center space-x-6">
       {!redeemPoints ? (
         <button
           onClick={handleRedeemPoints}
-          className="bg-yellow-500 text-gray-900 font-semibold px-6 py-3 rounded-full shadow-lg transition transform hover:scale-105"
+          className="bg-gradient-to-r from-teal-500 to-teal-600 text-white font-semibold px-8 py-3 sm:px-8 sm:py-4 rounded-full shadow-lg hover:scale-105 transition-all"
         >
           🎉 Redeem
         </button>
       ) : (
         <button
           onClick={handlePaymentGateway}
-          className="bg-green-500 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition transform hover:scale-105"
+          className="bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold px-8 py-3 sm:px-8 sm:py-4 rounded-full shadow-lg hover:scale-105 transition-all"
         >
           💸 Pay Now
         </button>
@@ -266,7 +315,8 @@ const Leaderboard = () => {
     </div>
   </div>
 )}
-        {activeTab === 'FAQ' && FAQ.map((FAQ, index) => (
+
+{activeTab === 'FAQ' && FAQ.map((FAQ, index) => (
           <div key={index} className="mb-4">
             <button className="w-full text-left text-blue-400" onClick={() => setOpenFAQ(openFAQ === index ? null : index)}>
               {FAQ.question}{activeTab === 'totalPoints' && (

@@ -99,18 +99,6 @@ const DeveloperPage = () => {
     <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-8 sm:bg-[url(https://i.pinimg.com/736x/ec/f2/57/ecf257e24648362b25563186975e7764.jpg)] bg-[url(https://i.pinimg.com/474x/a8/3c/41/a83c41f61d5a0ddad561c62d38ed2949.jpg)] bg-cover bg-center bg-fixed">
     
       <NavBar/>
-      <Tilt 
-  glareEnable={true} 
-  tiltMaxAngleX={45} 
-  tiltMaxAngleY={45} 
-  glareColor="transparent" 
-  glareMaxOpacity={0} 
-  perspective={3000} 
-  className="w-full"
-  transitionSpeed={300}
-  gyroscope={true}
->
-
       <motion.h1
         className=" mt-12 text-3xl sm:text-7xl font-extrabold mb-12 text-center animate-bounce "
         style={{
@@ -156,7 +144,6 @@ const DeveloperPage = () => {
     </motion.div>
   ))}
 </div>
-</Tilt>
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl">
     {features.map((feature, index) => (
   <div key={index} className="w-full">
